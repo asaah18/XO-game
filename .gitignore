@@ -102,3 +102,8 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+/.idea/vcs.xml
+/.idea/XO-game.iml
+/.idea/inspectionProfiles/profiles_settings.xml
+/.idea/modules.xml
+/.idea/misc.xml
