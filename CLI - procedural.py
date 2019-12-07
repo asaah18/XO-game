@@ -8,14 +8,15 @@ def is_odd(number: int):
 
 
 # done: game board(grid) input interface
-def validate_input(choice: str):
+def validate_input(choice: str, included_start: int, excluded_end: int):
     # validate for acceptable input[1-9]
     if not choice.isdigit():
         return False
-    # validate for input is in range[1-9]
-    if not int(choice) in range(1, 10):
+    # validate for input is in range[included_start-excluded_end)
+    if not int(choice) in range(included_start, excluded_end):
         return False
-    return True
+    else:
+        return True
 
 
 def check_availability(board: list, choice: int):
@@ -37,7 +38,6 @@ def get_coordinate(choice: int):
     return row_index, column_index
 
 
-# done: print game board(grid)"
 def print_board(board: list):
     for main_index, row in enumerate(board):
         text = ""
@@ -50,7 +50,6 @@ def print_board(board: list):
             print("-" * len(text))
 
 
-# done: determine win, lose and draw state
 def score(board: list, player: str):
     # row by row
     for row in board:
@@ -87,6 +86,19 @@ def determine_winner(piece_of_board: list, player: str):
 
 
 # done: main function to lead the program
+# def get_mode():
+#     mode = None
+#     while mode is None:
+#         user_input = input("choose game mode ([1] human vs computer, [2] human vs human):")
+#         if validate_input(user_input, 1, 3):
+#             mode = user_input
+#
+#     if mode is 1:
+#         return "H", "C"
+#     elif mode is 2:
+#         return "H", "H"
+
+
 def play():
     template = [["1", "2", "3"], ["4", "5", "6"], ["7", "8", "9"]]
     board = [[DEFAULT_VALUE, DEFAULT_VALUE, DEFAULT_VALUE],
@@ -98,6 +110,7 @@ def play():
 
     # welcome page
     print("welcome to XO game,")
+    # player1, player2 = get_mode()
     print("you will play against computer, and computer will play first. and your letter will be 'X'")
     print("please use the numbers in the board below as a coordinating system.")
     print(separate)
@@ -118,7 +131,7 @@ def play():
             # even number -> human
             elif not is_odd(counter):
                 user_input = input("where do you want to play[from 1 to 9]: ")
-                if validate_input(user_input):
+                if validate_input(user_input, 1, 10):
                     user_input = int(user_input)
                     if not check_availability(board, user_input):
                         print(" place is unavailable!")
@@ -140,7 +153,7 @@ def play():
         # match state
         if is_odd(counter):
             if score(board, (computer_letter if is_odd(counter) else player_letter)):
-                print((computer_letter if is_odd(counter) else player_letter) , "is the winner")
+                print((computer_letter if is_odd(counter) else player_letter), "is the winner")
                 break
 
     else:

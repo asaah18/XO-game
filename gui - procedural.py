@@ -8,25 +8,46 @@ DEFAULT = " "
 buttons = []
 
 
-def winner(letter: str = player_letter):
+def get_board():
     board = []
-
     # extract text from buttons
     for button in buttons:
         board.append(button["text"])
 
-    # check for wining
+    return board
+
+
+def is_winner(board, letter: str = player_letter):
     if (board[0] is letter) and (board[1] is letter) and (board[2] is letter) \
-        or (board[3] is letter) and (board[4] is letter) and (board[5] is letter) \
-        or (board[6] is letter) and (board[7] is letter) and (board[8] is letter) \
-        or (board[0] is letter) and (board[3] is letter) and (board[6] is letter) \
-        or (board[1] is letter) and (board[4] is letter) and (board[7] is letter) \
-        or (board[2] is letter) and (board[5] is letter) and (board[8] is letter) \
-        or (board[0] is letter) and (board[4] is letter) and (board[8] is letter) \
-        or (board[2] is letter) and (board[4] is letter) and (board[6] is letter):
+            or (board[3] is letter) and (board[4] is letter) and (board[5] is letter) \
+            or (board[6] is letter) and (board[7] is letter) and (board[8] is letter) \
+            or (board[0] is letter) and (board[3] is letter) and (board[6] is letter) \
+            or (board[1] is letter) and (board[4] is letter) and (board[7] is letter) \
+            or (board[2] is letter) and (board[5] is letter) and (board[8] is letter) \
+            or (board[0] is letter) and (board[4] is letter) and (board[8] is letter) \
+            or (board[2] is letter) and (board[4] is letter) and (board[6] is letter):
         return True
     else:
         return False
+
+
+def game_end(player_win):
+    title = "congratulations"
+    message = player_letter + " are the winner"
+    messagebox.showinfo(title, message)
+    if messagebox.askyesno("what to do next?", "do you want to play again? if not, the game will close."):
+        for button in buttons:
+            button.config(text=DEFAULT, state=NORMAL, relief=RAISED)
+    else:
+        root.destroy()
+
+
+def change_letter():
+    global player_letter
+    if player_letter == "O":
+        player_letter = "X"
+    else:
+        player_letter = "O"
 
 
 def play(position):
@@ -34,21 +55,11 @@ def play(position):
     buttons[position].config(text=player_letter, state="disabled", relief=FLAT)
 
     # check for winning
-    if winner(player_letter):
-        messagebox.showinfo("congratulations", "you are the winner")
-        if messagebox.askyesno("what to do next?", "do you want to play again? if not, the game will close."):
-            for button in buttons:
-                button.config(text=DEFAULT, state=NORMAL, relief=RAISED)
-        else:
-            root.destroy()
+    if is_winner(get_board(), player_letter):
+        game_end(TRUE)
 
+    change_letter()
 
-# for number in range(9):
-#     i = number
-#     buttons.append(Button(root, text=number, command=lambda: play(i)))
-#     row, column = number // 3, number % 3
-#     buttons[number].grid(row=row, column=column)
-#     # button[number].bind('<Button>', lambda: play(number))
 
 # first row
 buttons.append(Button(root, text=DEFAULT, command=lambda: play(0)))
@@ -81,5 +92,3 @@ buttons.append(Button(root, text=DEFAULT, command=lambda: play(8)))
 buttons[8].grid(row=2, column=2)
 
 root.mainloop()
-
-
