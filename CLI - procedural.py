@@ -151,10 +151,9 @@ def play():
         print(separate)
 
         # match state
-        if is_odd(counter):
-            if score(board, (computer_letter if is_odd(counter) else player_letter)):
-                print((computer_letter if is_odd(counter) else player_letter), "is the winner")
-                break
+     if score(board, (computer_letter if is_odd(counter) else player_letter)):
+        print((computer_letter if is_odd(counter) else player_letter), "is the winner")
+        break
 
     else:
         print("no one win")
